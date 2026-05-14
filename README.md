@@ -61,8 +61,8 @@
 ### 1. 克隆仓库
 
 ```bash
-git clone https://github.com/kevinzhoudyy/ai-writing-workflow.git
-cd ai-writing-workflow
+git clone https://github.com/kevinzhoudyy/douya-ai-writing-workflow.git
+cd douya-ai-writing-workflow
 ```
 
 ### 2. 配置个人素材库
