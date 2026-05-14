@@ -1,12 +1,15 @@
-# AI Writing Workflow
+# Douya AI Writing Workflow
 
-基于 Claude Code CLAUDE.md 规则驱动的完整 AI 辅助写作工作流，覆盖微信公众号、小红书、视频脚本三大内容平台，配套可视化排版编辑器。
+一套与 AI Agent 无关的完整写作工作流，覆盖微信公众号、小红书、视频脚本三大内容平台，配套可视化排版编辑器。
+
+适用于 Claude Code、WorkBuddy、OpenClaw、Codex 等所有支持规则文件的 AI Agent。每个 Agent 只需读取项目中的规则文件（CLAUDE.md / AGENTS.md），即可按照相同流程执行写作任务。
 
 ---
 
 ## 核心价值
 
-- **规则即流程** — 所有写作规范写在 CLAUDE.md 中，Claude Code 进入目录后自动加载，无需每次重复交代
+- **规则即流程** — 所有写作规范写在 CLAUDE.md / AGENTS.md 中，AI Agent 进入目录后自动加载，无需每次重复交代
+- **Agent 无关** — 同一套规则文件适用于任何 AI Agent，切换工具不需要改流程
 - **降 AI 味** — 三遍审校体系（内容→风格→细节），目标 AI 检测率 < 30%
 - **可视化编辑** — 写完自动同步到编辑器，所见即所得，一键复制到公众号/小红书
 - **多平台覆盖** — 公众号长文、小红书图文/纯文字帖、视频口播稿，一套工作流搞定
@@ -16,8 +19,8 @@
 ## 包含什么
 
 ```
-├── CLAUDE.md                    # 根规则：工作区路由 + 全局协作原则
-├── AGENTS.md                    # 同上（供 Codex 等其他工具使用）
+├── CLAUDE.md                    # 根规则：工作区路由 + 全局协作原则（Claude Code 原生读取）
+├── AGENTS.md                    # 同上（Codex / WorkBuddy / OpenClaw 等读取）
 ├── agents/                      # Agent 角色模板
 │   ├── explorer.yaml            #   只读调研 Agent
 │   ├── reviewer.yaml            #   审校 Agent
@@ -55,8 +58,20 @@
 
 ### 前置条件
 
-- [Claude Code](https://docs.anthropic.com/en/docs/claude-code) CLI 已安装
-- Node.js >= 18
+- 任意一个支持规则文件的 AI Agent（见下方兼容列表）
+- Node.js >= 18（编辑器需要）
+
+### AI Agent 兼容性
+
+| Agent | 规则文件 | 说明 |
+|-------|---------|------|
+| [Claude Code](https://docs.anthropic.com/en/docs/claude-code) | `CLAUDE.md` | 原生支持，进入目录自动加载 |
+| [WorkBuddy](https://github.com/nicepkg/workbuddy) | `CLAUDE.md` / `AGENTS.md` | 支持 CLAUDE.md 规则体系 |
+| [OpenClaw](https://github.com/openclaw-ai/openclaw) | `AGENTS.md` | 支持 AGENTS.md 规则体系 |
+| [Codex](https://openai.com/index/introducing-codex/) | `AGENTS.md` | OpenAI Codex，支持 AGENTS.md |
+| 其他 Agent | `CLAUDE.md` / `AGENTS.md` | 只要能读取项目根目录的规则文件即可适配 |
+
+> 核心原理：CLAUDE.md 和 AGENTS.md 本质都是纯文本规则文件。任何 AI Agent 只要在启动时读取这些文件并遵循其中的指令，就能执行相同的工作流。
 
 ### 1. 克隆仓库
 
@@ -77,21 +92,21 @@ cd douya-ai-writing-workflow
 └── 产品开发.md          # 示例：你的项目经历
 ```
 
-写作时 Claude Code 会自动检索素材库，用真实经历替代 AI 腔调。
+写作时 AI Agent 会自动检索素材库，用真实经历替代 AI 腔调。
 
 ### 3. 配置风格指南
 
-编辑 `写作参考/风格指南.md`，填入你的个人写作风格（口语化程度、句式偏好、禁用词等）。不填也行，Claude Code 会默认采用"口语化、简洁直接、有明确观点"的风格。
+编辑 `写作参考/风格指南.md`，填入你的个人写作风格（口语化程度、句式偏好、禁用词等）。不填也行，Agent 会默认采用"口语化、简洁直接、有明确观点"的风格。
 
 ### 4. 开始写作
 
-在 Claude Code 中直接告诉它你要写什么：
+在你的 AI Agent 中直接告诉它你要写什么：
 
 ```
 帮我写一篇公众号文章，主题是"AI 会不会取代你的工作"
 ```
 
-Claude Code 会自动：
+Agent 会自动：
 1. 判断工作区（公众号）
 2. 引导你梳理 brief
 3. 提供 3-4 个选题方向供你选择
@@ -144,7 +159,7 @@ node start.js
 | 编辑文字 | 点击「✏️ 编辑」→ 直接点击修改 |
 | 编辑源码 | 点击「＜/＞ 源码」→ Markdown 编辑 |
 | 插入 emoji | 点击「😀」→ 选择分类 → 点击插入 |
-| 复制到公众号 | 点击「📋 复制到公众号」 |
+| 复制正文 | 点击「📋 复制正文」 |
 
 修改 `articles/` 下的 `.md` 文件后，编辑器每 5 秒自动检测更新并重建，无需手动刷新。
 
@@ -175,8 +190,17 @@ node start.js
 
 ## 适配你自己的工作流
 
-1. **改 CLAUDE.md** — 流程步骤、审校标准、配图规则都可以按你的习惯调整
-2. **填风格指南** — 告诉 Claude Code 你的写作偏好
+### 1. 选择你的 Agent
+
+- **Claude Code** — 开箱即用，原生读取 `CLAUDE.md`
+- **WorkBuddy** — 开箱即用，支持 `CLAUDE.md` 规则体系
+- **OpenClaw / Codex** — 开箱即用，读取 `AGENTS.md`（内容与 CLAUDE.md 一致）
+- **其他 Agent** — 确认你的 Agent 能在启动时读取项目根目录的规则文件，如不能，将 CLAUDE.md 的内容粘贴到 Agent 的 system prompt 中即可
+
+### 2. 个性化配置
+
+1. **改规则文件** — 流程步骤、审校标准、配图规则都可以按你的习惯调整
+2. **填风格指南** — 告诉 Agent 你的写作偏好
 3. **建素材库** — 你的经历是最好的"去 AI 味"武器
 4. **调编辑器** — `editor-styles.js` 定义主题，`emoji-features.js` 定义增强功能
 
