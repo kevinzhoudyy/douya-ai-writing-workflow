@@ -1,0 +1,46 @@
+# ===== 系统/编辑器 =====
+.DS_Store
+node_modules/
+
+# ===== 敏感配置 =====
+.mcp.json
+.claude/
+.codex/
+.workbuddy/
+公众号写作/volcano_mcp.py
+
+# ===== 个人内容 =====
+个人素材库/
+AI科普系列/
+Prompt梳理/_prompts/
+
+# ===== 公众号内容 =====
+公众号写作/articles/
+公众号写作/images/
+公众号写作/_briefs/
+公众号写作/_knowledge_base/
+公众号写作/__pycache__/
+
+# ===== 小红书内容 =====
+小红书/articles/
+小红书/images/
+小红书/collection-covers/
+小红书/collections/ai-ppt-and-presentation.md
+小红书/collections/ai-writing-workflow-and-publishing.md
+小红书/小红书文字帖接入方案.md
+
+# ===== 视频脚本内容 =====
+视频脚本/_drafts/
+视频脚本/_roles/
+
+# ===== 编辑器个人数据 =====
+豆芽编辑器/preset-articles.json
+豆芽编辑器/豆芽编辑器.html
+豆芽编辑器/screenshots/
+豆芽编辑器/generated-images/
+豆芽编辑器/*.html
+豆芽编辑器/马斯克从PayPal到火星-1-assets/
+
+# ===== 其他项目 =====
+pexo-skills/
+artifacts/pets/
